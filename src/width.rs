@@ -1,10 +1,6 @@
-use crate::{tokens, Node, Offset};
+use crate::tokens::Node;
+use crate::tokens::Offset;
 
-impl<T: Width> Width for Offset<T> {
-    fn width(&self) -> u32 {
-        self.0 + self.1.width()
-    }
-}
 
 pub trait Width {
     fn width(&self) -> u32;
@@ -22,8 +18,3 @@ impl<T: Width> Width for Option<T> {
     }
 }
 
-impl<T> Width for Node<T> {
-    fn width(&self) -> u32 {
-        self.0
-    }
-}

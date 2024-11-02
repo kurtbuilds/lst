@@ -1,15 +1,31 @@
 use crate::Linearize;
 
+mod pair;
+mod object;
+mod item;
+mod array;
+mod value;
+mod offset;
+mod node;
+
+pub use pair::*;
+pub use object::*;
+pub use item::*;
+pub use array::*;
+pub use offset::*;
+pub use value::*;
+pub use node::*;
+
 macro_rules! define_token {
     ($name:ident, $char:expr) => {
         #[derive(Debug)]
         pub struct $name;
 
         impl $crate::TryParse for $name {
-            type Error = $crate::ParseError;
-            fn try_parse(mut content: $crate::Buffer<'_>) -> Result<Self, $crate::ParseError> {
+            type Error = $crate::parse::ParseError;
+            fn try_parse(mut content: $crate::Buffer<'_>) -> Result<Self, $crate::parse::ParseError> {
                 if !content.starts_with($char) {
-                    return Err($crate::ParseError::new(concat!(
+                    return Err($crate::parse::ParseError::new(concat!(
                         "Expected '",
                         stringify!($char),
                         "'"
@@ -49,6 +65,6 @@ pub struct Trivia;
 #[derive(Debug)]
 pub struct String;
 #[derive(Debug)]
-pub struct Invalid(crate::ParseError);
+pub struct Invalid(crate::parse::ParseError);
 #[derive(Debug)]
 pub struct Number;
